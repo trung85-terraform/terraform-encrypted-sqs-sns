@@ -1,13 +1,15 @@
 variable "region" {
   description = "The AWS region."
-  default     = "us-east-1"
+  default     = "ap-southeast-1"
 }
 
 variable "prefix" {
   default = "blog"
 }
 
-variable "account_id" {}
+variable "account_id" {
+  default = 667009429896
+}
 
 variable "owner" {
   default     = "DevOps"

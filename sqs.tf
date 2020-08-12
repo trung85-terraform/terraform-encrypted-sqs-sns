@@ -6,7 +6,7 @@ data "aws_iam_policy_document" "sqs_key_policy" {
 
     actions = ["kms:*"]
 
-    principals = {
+    principals {
       type        = "AWS"
       identifiers = ["arn:aws:iam::${var.account_id}:root"]
     }
@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "sqs_key_policy" {
 
     actions = ["kms:GenerateDataKey*", "kms:Decrypt"]
 
-    principals = {
+    principals {
       type        = "Service"
       identifiers = ["sns.amazonaws.com"]
     }
@@ -30,13 +30,13 @@ data "aws_iam_policy_document" "sqs_key_policy" {
 
 resource "aws_kms_key" "sqs-encryption-key" {
   description = "This key is used for encryption of SQS queues"
-  policy      = "${data.aws_iam_policy_document.sqs_key_policy.json}"
+  policy      = data.aws_iam_policy_document.sqs_key_policy.json
 
-  tags {
+  tags = {
     Name        = "sqs-encryption-key-${terraform.workspace}"
-    Owner       = "${var.owner}"
-    Support     = "${var.support}"
-    Environment = "${terraform.workspace}"
+    Owner       = var.owner
+    Support     = var.support
+    Environment = terraform.workspace
   }
 }
 
@@ -47,15 +47,15 @@ locals {
 
 ######################################## USER #############################################
 module "user_sqs" {
-  source      = "modules/sqs"
-  region      = "${var.region}"
-  environment = "${terraform.workspace}"
+  source      = "./modules/sqs"
+  region      = var.region
+  environment = terraform.workspace
   name        = "user"
-  key_id      = "${aws_kms_key.sqs-encryption-key.id}"
+  key_id      = aws_kms_key.sqs-encryption-key.id
 }
 
 resource "aws_sqs_queue_policy" "user_sqs_policy" {
-  queue_url = "${module.user_sqs.queue_id}"
+  queue_url = module.user_sqs.queue_id
 
   policy = <<POLICY
 {
@@ -83,15 +83,15 @@ POLICY
 
 ######################################## BLOG #############################################
 module "blog_sqs" {
-  source      = "modules/sqs"
-  region      = "${var.region}"
+  source      = "./modules/sqs"
+  region      = var.region
   environment = "${terraform.workspace}"
   name        = "blog"
   key_id      = "${aws_kms_key.sqs-encryption-key.id}"
 }
 
 resource "aws_sqs_queue_policy" "blog_sqs_policy" {
-  queue_url = "${module.blog_sqs.queue_id}"
+  queue_url = module.blog_sqs.queue_id
 
   policy = <<POLICY
 {

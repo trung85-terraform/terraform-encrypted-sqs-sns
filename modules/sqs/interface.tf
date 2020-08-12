@@ -2,18 +2,18 @@
 variable "environment" {}
 
 variable "name" {
-  type        = "string"
+  type        = string
   description = "Name of the queue"
 }
 
 variable "key_id" {
-  type        = "string"
+  type        = string
   description = "KMS key id for encryption"
 }
 
 variable "region" {
   description = "The AWS region."
-  default     = "us-east-1"
+  default     = "ap-southeast-1"
 }
 
 variable "owner" {
@@ -30,27 +30,27 @@ variable "support" {
 
 /************************* OUTPUTS ***********************************************/
 output "dead_letter_queue_id" {
-  description = "${var.name} dead letter queue URL"
-  value       = "${aws_sqs_queue.dead_letter_queue.id}"
+  description = "Dead letter queue id dead letter queue URL"
+  value       = aws_sqs_queue.dead_letter_queue.id
 }
 
 output "dead_letter_queue_arn" {
-  description = "${var.name} dead letter queue arn"
-  value       = "${aws_sqs_queue.dead_letter_queue.arn}"
+  description = "Dead letter queue arn dead letter queue arn"
+  value       = aws_sqs_queue.dead_letter_queue.arn
 }
 
 output "queue_id" {
-  description = "${var.name} dead queue URL"
-  value       = "${aws_sqs_queue.queue.id}"
+  description = "Queue id dead queue URL"
+  value       = aws_sqs_queue.queue.id
 }
 
 output "queue_arn" {
-  description = "${var.name} dead queue arn"
-  value       = "${aws_sqs_queue.queue.arn}"
+  description = "Queue Arn dead queue arn"
+  value       = aws_sqs_queue.queue.arn
 }
 
 output "queue_name" {
-  description = "${var.name} dead queue full name"
+  description = "Queue name dead queue full name"
   value       = "${var.name}-queue-${var.environment}"
 }
 

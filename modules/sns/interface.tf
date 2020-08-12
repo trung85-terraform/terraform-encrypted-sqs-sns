@@ -3,11 +3,11 @@ variable "environment" {}
 
 variable "region" {
   description = "The AWS region."
-  default     = "us-east-1"
+  default     = "ap-southeast-1"
 }
 
 variable "name" {
-  type        = "string"
+  type        = string
   description = "Name of the queue"
 }
 
@@ -19,14 +19,14 @@ variable "name" {
 variable "account_id" {}
 
 variable "queue_names" {
-  type = "list"
+  type = list
 }
 
 /************************* VARIABLES *********************************************/
 
 /************************* OUTPUTS ***********************************************/
 output "topic_arn" {
-  description = "${var.name} dead letter queue URL"
+  description = "Topic Arn dead letter queue URL"
   value       = "${aws_sns_topic.topic.arn}"
 }
 

@@ -1,5 +1,5 @@
 module "new-user" {
-  source      = "modules/sns"
+  source      = "./modules/sns"
   name        = "new-user"
   account_id  = "${var.account_id}"
   environment = "${terraform.workspace}"
@@ -7,7 +7,7 @@ module "new-user" {
 }
 
 module "new-blog" {
-  source      = "modules/sns"
+  source      = "./modules/sns"
   name        = "new-blog"
   account_id  = "${var.account_id}"
   environment = "${terraform.workspace}"
